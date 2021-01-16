@@ -19,9 +19,12 @@ public interface DiscussPostMapper {
      */
     List<DiscussPost> selectDiscussPosts (int userId, int offset,int limit);
 
-    //计算帖子的总数
+    //计算帖子的总数  userId = 0 时，计算所有的帖子总数1
     //@Param 用于给参数起别名
-    //如果只有一个参数，而且在<if> 里使用，则必须起别名
+    //如果只有一个参数，而且在动态sql<if> 里使用，则必须起别名
     int selectDiscussPostRows(@Param("userId") int userId);
 
+    int insertDiscussPost(DiscussPost post);
+
+    DiscussPost selectDiscussPostById(int id);
 }
