@@ -2,8 +2,10 @@ package com.zhu;
 
 
 import com.zhu.dao.DiscussPostMapper;
+import com.zhu.dao.LoginTicketMapper;
 import com.zhu.dao.UserMapper;
 import com.zhu.entity.DiscussPost;
+import com.zhu.entity.LoginTicket;
 import com.zhu.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,9 @@ import java.util.List;
 
 @SpringBootTest
 public class MapperTest {
+
+    @Autowired
+    private LoginTicketMapper loginTicketMapper;
 
     @Autowired
     DiscussPostMapper discussPostMapper;
@@ -56,6 +61,8 @@ public class MapperTest {
 
         int rows = userMapper.insertUser(user);
         System.out.println(rows);
+        // 由于配置mybatis.configuration.useGeneratedKeys=true
+        // 所以插入对象之后 mybatis自动帮我们将id set到对象中了1
         System.out.println(user.getId());
     }
 
@@ -70,5 +77,28 @@ public class MapperTest {
 
         rows = userMapper.updatePassword(150,"hello");
         System.out.println(rows);
+    }
+
+    @Test
+    public void testInsertLoginTicket() {
+        LoginTicket loginTicket = new LoginTicket();
+        loginTicket.setUserId(101);
+        loginTicket.setTicket("abc");
+        loginTicket.setStatus(0);
+        loginTicket.setExpired(new Date(System.currentTimeMillis() + 1000 * 60 * 10));
+        loginTicketMapper.insertLoginTicket(loginTicket);
+        System.out.println(loginTicket.getId());
+    }
+
+    @Test
+    public void selectLoginTicket() {
+        LoginTicket loginTicket = loginTicketMapper.selectByTicket("abc");
+        System.out.println(loginTicket);
+
+        loginTicketMapper.updateStatus("abc",1);
+
+        loginTicket = loginTicketMapper.selectByTicket("abc");
+        System.out.println(loginTicket);
+
     }
 }
