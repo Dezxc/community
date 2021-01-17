@@ -113,7 +113,8 @@ public class SensitiveFilter {
                 tmpNode = rootNode;
 
             }else if(tmpNode.isKeywordEnd()) {
-                // 证明出现敏感词 添加*** 替换
+                // 遇到结束标识
+                // begin-position这一段证明出现敏感词 添加*** 替换
                 sb.append(REPLACEMENT);
                 // position向后移动一位   begin移动到position相同的位置
                 begin = ++position;

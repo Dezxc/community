@@ -27,7 +27,7 @@ public class HomeController {
 
     @RequestMapping(path="/index",method = RequestMethod.GET)
     public String getIndexPage(Model model, Page page) {
-        //在controller方法中的参数类，会自动注入到model中，不用手动添加
+        //在controller方法中的参数如果是Bean类，会自动注入到model中，不用手动添加
         // 方法调用前,SpringMVC会自动实例化Model和Page,并将Page注入Model.
         // 所以,在thymeleaf中可以直接访问Page对象中的数据.
 
