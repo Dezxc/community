@@ -3,9 +3,11 @@ package com.zhu;
 
 import com.zhu.dao.DiscussPostMapper;
 import com.zhu.dao.LoginTicketMapper;
+import com.zhu.dao.MessageMapper;
 import com.zhu.dao.UserMapper;
 import com.zhu.entity.DiscussPost;
 import com.zhu.entity.LoginTicket;
+import com.zhu.entity.Message;
 import com.zhu.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +23,13 @@ public class MapperTest {
     private LoginTicketMapper loginTicketMapper;
 
     @Autowired
-    DiscussPostMapper discussPostMapper;
+    private DiscussPostMapper discussPostMapper;
 
     @Autowired
-    UserMapper userMapper;
+    private UserMapper userMapper;
+
+    @Autowired
+    private MessageMapper messageMapper;
 
     @Test
     public void TestDiscussPost(){
@@ -101,4 +106,39 @@ public class MapperTest {
         System.out.println(loginTicket);
 
     }
+
+    @Test
+    public void selectMessageTest() {
+//        List<Message> messages = messageMapper.selectConversations(111, 0, Integer.MAX_VALUE);
+//        for(Message message : messages) {
+//            System.out.println(message);
+//        }
+        int i = messageMapper.selectConversationCount(111);
+        System.out.println(i);
+    }
+
+    @Test
+    public void selectMessageTest2() {
+        List<Message> list = messageMapper.selectConversations(111, 0, 20);
+        for (Message message : list) {
+            System.out.println(message);
+        }
+
+        int count = messageMapper.selectConversationCount(111);
+        System.out.println(count);
+
+        list = messageMapper.selectLetters( "111_112", 0, 10);
+        for (Message message : list) {
+            System.out.println(message);
+        }
+
+        count = messageMapper.selectLetterCount("111_112");
+        System.out.println(count);
+
+        count = messageMapper.selectLetterUnreadCount(131, "111_131");
+        System.out.println(count);
+
+    }
+
+
 }
