@@ -103,7 +103,7 @@ public class RedisTests {
                 String redisKey = "text:tx";
 
                 // 启用事务
-                redisTemplate.multi();
+                redisOperations.multi();
                 redisOperations.opsForSet().add(redisKey, "zhangsan");
                 redisOperations.opsForSet().add(redisKey, "lisi");
                 redisOperations.opsForSet().add(redisKey, "wangwu");

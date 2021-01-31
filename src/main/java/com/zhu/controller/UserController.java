@@ -2,6 +2,7 @@ package com.zhu.controller;
 
 import com.zhu.annotation.LoginRequired;
 import com.zhu.entity.User;
+import com.zhu.service.LikeService;
 import com.zhu.service.UserService;
 import com.zhu.util.CommunityUtil;
 import com.zhu.util.HostHolder;
@@ -29,6 +30,9 @@ import java.io.OutputStream;
 public class UserController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
+    @Autowired
+    private LikeService likeService;
 
     @Autowired
     private UserService userService;
@@ -131,6 +135,20 @@ public class UserController {
         rePassword = CommunityUtil.md5(rePassword + user.getSalt());
         userService.updatePassword(user.getId(),rePassword);
         return "redirect:/index";
+
+    }
+
+    @RequestMapping(path = "/profile/{userId}",method = RequestMethod.GET)
+    public String getProfilePage(@PathVariable("userId") int userId, Model model) {
+        // 用户信息
+        User user = userService.findUserById(userId);
+        model.addAttribute("user",user);
+        
+        // 用户点赞信息
+        int likeCount = likeService.findUserLikeCount(userId);
+        model.addAttribute("likeCount",likeCount);
+
+        return "/site/profile";
 
     }
 
