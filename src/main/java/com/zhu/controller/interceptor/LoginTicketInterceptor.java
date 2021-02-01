@@ -47,7 +47,7 @@ public class LoginTicketInterceptor implements HandlerInterceptor {
         return true;
     }
 
-    // 在controller方法执行结束
+    // 在controller方法结束后执行
     // 在模板引擎渲染前
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
