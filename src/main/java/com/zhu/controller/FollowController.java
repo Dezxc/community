@@ -1,7 +1,9 @@
 package com.zhu.controller;
 
+import com.zhu.entity.Event;
 import com.zhu.entity.Page;
 import com.zhu.entity.User;
+import com.zhu.event.EventProducer;
 import com.zhu.service.FollowService;
 import com.zhu.service.UserService;
 import com.zhu.util.CommunityConstant;
@@ -22,6 +24,9 @@ import java.util.Map;
 public class FollowController implements CommunityConstant {
 
     @Autowired
+    private EventProducer eventProducer;
+
+    @Autowired
     private UserService userService;
 
     @Autowired
@@ -36,6 +41,16 @@ public class FollowController implements CommunityConstant {
         User user = hostHolder.getUser();
 
         followService.follow(user.getId(),entityType,entityId);
+
+        // 触发事件
+        Event event = new Event()
+                .setTopic(TOPIC_FOLLOW)
+                .setUserId(hostHolder.getUser().getId())
+                .setEntityType(entityType)
+                .setEntityId(entityId)
+                .setEntityUserId(entityId);
+        eventProducer.fireMessage(event);
+
         return CommunityUtil.getJSONString(0,"已关注！");
     }
 
